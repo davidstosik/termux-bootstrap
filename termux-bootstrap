@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Update and upgrade packages without prompt
+apt update && apt upgrade -y
+
+# Install SSH server
+pkg install -y openssh 
+
+# Start SSH server
+sshd
+
+# Set a password for user
+PASSWD=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1`
+echo -e "${PASSWD}\n${PASSWD}" | passwd
+
+# doesn't seem to do what I want
+#echo "PermitEmptyPasswords yes" >> ~/../usr/etc/ssh/sshd_config
+
+echo "From your computer, find this phone's IP by running \`arp -a\`."
+echo "Then run \`ssh-copy-id {IP}\`."
+echo "Your password is $PASSWD"
